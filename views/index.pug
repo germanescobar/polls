@@ -10,3 +10,5 @@ block content
       p Descripción: #{poll.description}
       p Votos: #{options}
       a(href=`/polls/${poll._id}`) Votar
+      br
+      a(href=`/polls/${poll._id}/edit`) Actualizar
