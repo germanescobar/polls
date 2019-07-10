@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1 Nombre: #{poll.title} 
+  div
+    p Creado por: #{poll.user.email}
+    p #{poll.description}
+    
+  each option in poll.options
+    div
+      p #{option.text} #{option.votes}  votes
+      - let count = Math.round((option.votes / poll.totalVotes()) * 100);
+      div(style={background: 'red', width: count+'%', height: '50px'})
+        span=count+'%'

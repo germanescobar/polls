@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 
 const pollSchema = mongoose.Schema({
-  title: String,
+  title: {
+    type:String,
+    required: [true, 'is required'],
+  },
   description: String,
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   options: [{
@@ -10,6 +13,10 @@ const pollSchema = mongoose.Schema({
     votes: { type: Number, default: 0 }
   }]
 });
+
+pollSchema.methods.totalVotes = function() {
+  return this.options.reduce((sum, o) => sum + o.votes, 0);
+}
 
 const Poll = mongoose.model('Poll', pollSchema);
 

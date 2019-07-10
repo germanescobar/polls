@@ -1,13 +1,22 @@
 extends layout
 
 block content
-  h1 Hola Mundo
-  
-  each poll in polls
-    div
-      h3 Nombre: #{poll.title} 
-      p Creador: #{poll.user.email}
-      p Descripción: #{poll.description}
-      p Opciones: 
-      p Votos: #{options}
-      a(href="/polls/#{poll._id}") Votar
+  div(class="container")
+    if user
+      div(class="columns")
+        div(class="column")
+          a(href="/polls/new" class="button is-link") New Poll
+    div(class="columns")
+      each poll in polls 
+        div(class="column is-4")
+          div(class="card")
+            div(class="card-content")
+              p(class="title") #{poll.title} 
+              p(class="subtitle is-6") Creador: #{poll.user.email}
+              div(class="content") #{poll.description}
+
+            footer(class="card-footer")
+              p(class="card-footer-item") Votos: #{poll.totalVotes()}
+              a(href=`/polls/${poll._id}` class="card-footer-item is-link") Votar
+              if user && user._id.equals(poll.user._id)
+                a(href=`/polls/${poll._id}/edit` class="card-footer-item is-link") Actualizar
