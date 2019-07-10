@@ -1,33 +1,24 @@
 extends layout
 
 block content
-  - let id = poll.id
-  - let title = poll.title
-  - let description = poll.description
-  - let option1 = poll.options[0].text
-  - let option2 = poll.options[1].text
-  - let option3 = poll.options[2].text
-  - let option4 = poll.options[3].text
-  
   div
-    form(action="/polls/update", method="post")
+    form(action=`/polls/${poll._id}`, method="post")
       p Title       
-      input(type="text" name="title" placeholder="Title" value=title)
+      input(type="text" name="title" placeholder="Title" value=poll.title)
       p Description
-      textarea(name="description" cols="30" rows="10" ) !{description}
+      textarea(name="description" cols="30" rows="10" ) !{poll.description}
       br
       label Opcion 1
-      input(type="text" name="option1" value=option1) 
+      input(type="text" name="option1" value=poll.options[0].text) 
       br
       label Opcion 2
-      input(type="text" name="option2" value=option2)
+      input(type="text" name="option2" value=poll.options[1].text)
       br
       label Opcion 3
-      input(type="text" name="option3" value=option3)
+      input(type="text" name="option3" value=poll.options[2].text)
       br
       label Opcion 4
-      input(type="text" name="option4" value=option4)
+      input(type="text" name="option4" value=poll.options[3].text)
       br
-      input(type="hidden" name="id" value=id)
       input(type="submit", value="Update")
       

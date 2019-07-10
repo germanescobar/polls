@@ -28,7 +28,7 @@ app.post("/polls", async (req, res, next) => {
     const data = {
       title: req.body.title,
       description: req.body.description,
-      user: '5d25112a1c9d440000337c82',
+      user: '5d24f405f3c60aa3fad0e683',
       options: [
         { text: req.body.option1 },
         { text: req.body.option2 },
@@ -47,18 +47,17 @@ app.post("/polls", async (req, res, next) => {
 app.get("/polls/:id/edit", async (req, res, next) => {
   try {
     const id = req.params.id;
-    await Poll.findById(id, (err, poll) => {
-      res.render('update', {poll})
-    })
+    const poll = await Poll.findById(id);
+    res.render('update', { poll })
   } catch(err) {
     next(err);
   }
 });
 
 // formulario para editar una encuesta
-app.post('/polls/update', async (req, res, next) => {
+app.post('/polls/:id', async (req, res, next) => {
   try {
-    let id = req.body.id;
+    let id = req.params.id;
     const data = {
       title: req.body.title,
       description: req.body.description,
