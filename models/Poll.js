@@ -11,6 +11,10 @@ const pollSchema = mongoose.Schema({
   }]
 });
 
+pollSchema.methods.totalVotes = function() {
+  return this.options.reduce((sum, o) => sum + o.votes, 0);
+}
+
 const Poll = mongoose.model('Poll', pollSchema);
 
 module.exports = Poll;

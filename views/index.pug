@@ -8,7 +8,7 @@ block content
       h3 Nombre: #{poll.title} 
       p Creador: #{poll.user.email}
       p Descripción: #{poll.description}
-      p Votos: #{options}
+      p Votos: #{poll.totalVotes()}
       a(href=`/polls/${poll._id}`) Votar
       br
       a(href=`/polls/${poll._id}/edit`) Actualizar
