@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= poll.title
+  
+  form(action=`/polls/${poll._id}/vote`, method="post")
+    each option in poll.options
+      div
+        input(type="radio" id=`option-${option._id}` name="option" value=option._id)
+        label(for=`option-${option._id}`)= option.text
+        
+    
+    div
+      button(type="submit") Votar!
