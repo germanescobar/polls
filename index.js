@@ -92,17 +92,22 @@ app.post("/polls/:id/vote", async (req, res, next) => {
     const optionId = req.body.option;
     await Poll.update(
       { '_id': req.params.id, 'options._id' : optionId },
-      { $inc: { 'options.$.votes': 1 } }
+      { $inc: { 'options.$.votes': 1 } },
     );
-
-    res.send("Ok");
+    res.redirect(`/polls/${req.params.id}/results`);
   } catch (e) {
     next(e);
   }
 });
 
 // ver los resultados de una encuesta
-app.get("/polls/:id:/results", (req, res) => {
+app.get("/polls/:id/results", async (req, res, next) => {
+  try{
+    const poll = await Poll.findById(req.params.id).populate('user');;
+    res.render("results", { poll })
+  }catch (e) {
+    next(e);
+  }
 
 });
 
