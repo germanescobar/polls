@@ -5,12 +5,10 @@ block content
   div
     p Creado por: #{poll.user.email}
     p #{poll.description}
-  -let sum = 0;
-  each option in poll.options
-    -sum += option.votes;
+    
   each option in poll.options
     div
       p #{option.text} #{option.votes}  votes
-      - let count = Math.round((option.votes / sum) * 100);
+      - let count = Math.round((option.votes / poll.totalVotes()) * 100);
       div(style={background: 'red', width: count+'%', height: '50px'})
         span=count+'%'
