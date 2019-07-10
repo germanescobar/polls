@@ -76,13 +76,29 @@ app.post('/polls/:id', async (req, res, next) => {
 });
 
 // formulario para votar por una encuesta
-app.get("/polls/:id", (req, res) => {
+app.get("/polls/:id", async (req, res, next) => {
+  try {
+    const poll = await Poll.findById(req.params.id);
 
+    res.render("vote", { poll });
+  } catch (e) {
+    next(e);
+  }
 });
 
 // votar por una encuesta
-app.post("/polls/:id/vote", (req, res) => {
-  //const vote = await Poll.findByIdAndUpdate()
+app.post("/polls/:id/vote", async (req, res, next) => {
+  try {
+    const optionId = req.body.option;
+    await Poll.update(
+      { '_id': req.params.id, 'options._id' : optionId },
+      { $inc: { 'options.$.votes': 1 } }
+    );
+
+    res.send("Ok");
+  } catch (e) {
+    next(e);
+  }
 });
 
 // ver los resultados de una encuesta
