@@ -9,10 +9,13 @@ const app = express();
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
+app.use(express.urlencoded({ extended: true}));
 
-// listar todas las encuestas
+
+
 app.get("/", async (req, res, next) => {
-
+    const polls = await Poll.find().populate('user');
+    res.render("index",{ polls });
 });
 
 // formulario para crear una encuesta
@@ -37,7 +40,7 @@ app.get("/polls/:id", (req, res) => {
 
 // votar por una encuesta
 app.post("/polls/:id/vote", (req, res) => {
-
+  //const vote = await Poll.findByIdAndUpdate()
 });
 
 // ver los resultados de una encuesta

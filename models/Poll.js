@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const pollSchema = mongoose.Schema({
   title: String,
   description: String,
