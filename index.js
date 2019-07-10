@@ -94,7 +94,7 @@ app.post("/polls/:id/vote", async (req, res, next) => {
       { '_id': req.params.id, 'options._id' : optionId },
       { $inc: { 'options.$.votes': 1 } },
     );
-    res.redirect("/polls/:id/results");
+    res.redirect(`/polls/${req.params.id}/results`);
   } catch (e) {
     next(e);
   }
