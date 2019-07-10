@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 const User = require("./models/User");
 const Poll = require("./models/Poll");
 
-const uri = 'mongodb+srv://MrRobot:Cicl!sm0si5@makeitreal-uiiha.mongodb.net/test?retryWrites=true&w=majority'
-mongoose.connect(uri, { useNewUrlParser: true });
+mongoose.connect("mongodb://127.0.0.1:27017/polls_top", { useNewUrlParser: true });
 
 const app = express();
 
@@ -45,8 +44,36 @@ app.post("/polls", async (req, res, next) => {
 });
 
 // formulario para editar una encuesta
-app.get("/polls/new", (req, res) => {
+app.get("/polls/:id/edit", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    await Poll.findById(id, (err, poll) => {
+      res.render('update', {poll})
+    })
+  } catch(err) {
+    next(err);
+  }
+});
 
+// formulario para editar una encuesta
+app.post('/polls/update', async (req, res, next) => {
+  try {
+    let id = req.body.id;
+    const data = {
+      title: req.body.title,
+      description: req.body.description,
+      options: [
+        { text: req.body.option1 },
+        { text: req.body.option2 },
+        { text: req.body.option3 },
+        { text: req.body.option4 }
+      ]
+    }
+    await Poll.update({_id:id}, data);
+    res.redirect('/')
+  } catch(err) {
+    next(err)
+  }
 });
 
 // formulario para votar por una encuesta
