@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  div
+    form(action="/polls", method="post")
+      p Title
+      input(type="text" name="title" placeholder="Title")
+      p Description
+      textarea(name="description", cols="30", rows="10")
+      br
+      label Opcion 1
+      input(type="text" name="option1")
+      br
+      label Opcion 2
+      input(type="text" name="option2")
+      br
+      label Opcion 3
+      input(type="text" name="option3")
+      br
+      label Opcion 4
+      input(type="text" name="option4")
+      br
+      input(type="submit", value="Create")
