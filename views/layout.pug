@@ -1,5 +1,27 @@
+doctype html
 html
   head
     title Encuestas
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css")
+    script(defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js")
+
   body
+    nav(class="navbar is-light" role="navigation" aria-label="main navigation")
+      div(class="container")      
+        div(class="navbar-brand")
+          div(class="navbar-menu") 
+            div(class="navbar-start")
+              a(href="/" class="navbar-item") Polls
+
+        div(class="navbar-end")
+          div(class="navbar-item")
+            div(class="buttons")
+              a(class="button is-primary")
+                strong Sign up
+              a(class="button is-light") Log in
+    br
+    
     block content

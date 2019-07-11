@@ -1,23 +1,40 @@
 extends layout
 
 block content
-  div
-    form(action="/polls", method="post")
-      p Title
-      input(type="text" name="title" placeholder="Title")
-      p Description
-      textarea(name="description", cols="30", rows="10")
-      br
-      label Opcion 1
-      input(type="text" name="option1")
-      br
-      label Opcion 2
-      input(type="text" name="option2")
-      br
-      label Opcion 3
-      input(type="text" name="option3")
-      br
-      label Opcion 4
-      input(type="text" name="option4")
-      br
-      input(type="submit", value="Create")
+  br
+  div(class="columns is-centered")
+    div(class="column is-4 box")
+      div(class="container")
+        form(action="/polls", method="post")    
+          div(class="field")
+            label(class="label") Title
+            div(class="control")
+              input(type="text" name="title" placeholder="Title" class="input is-rounded")
+
+          div(class="field")
+            label(class="label") Description
+            div(class="control")
+              textarea(name="description", cols="30", rows="5" class="textarea" placeholder="Description")
+
+          div(class="field")
+            label(class="label") Opcion 1
+            div(class="control")
+              input(type="text" name="option1" class="input is-rounded")
+
+          div(class="field")
+            label(class="label") Opcion 2
+            div(class="control")
+              input(type="text" name="option2" class="input is-rounded")    
+
+          div(class="field")
+            label(class="label") Opcion 3
+            div(class="control")
+              input(type="text" name="option3" class="input is-rounded")      
+
+          div(class="field")
+            label(class="label") Opcion 4
+            div(class="control")
+              input(type="text" name="option4" class="input is-rounded")
+
+          div(class="control")
+            input(type="submit", value="Create" class="button is-link")
