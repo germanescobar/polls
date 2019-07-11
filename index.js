@@ -5,14 +5,14 @@ const Poll = require("./models/Poll");
 const bcrypt = require('bcrypt');
 const cookieSession = require("cookie-session");
 
-mongoose.connect("mongodb://127.0.0.1:27017/polls_top", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/polls_top", { useNewUrlParser: true });
 
 const app = express();
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
 app.use(cookieSession({
-  secret: "una_cadena_secreta",
+  secret: process.env.COOKIE_SECRET || "una_cadena_secreta",
   maxAge: 2 * 24 * 60 * 60 * 1000
 }));
 
@@ -194,4 +194,5 @@ app.get("/logout", requireUser, (req, res) => {
   res.redirect('/login');
 })
 
-app.listen(3000, () => console.log("Escuchando en el puerto 3000 ...."));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Escuchando en el puerto ${PORT} ...`));
