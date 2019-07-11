@@ -19,9 +19,10 @@ html
         div(class="navbar-end")
           div(class="navbar-item")
             div(class="buttons")
-              a(class="button is-primary")
-                strong Sign up
-              a(class="button is-light") Log in
-    br
-    
+              if user
+                a(href="/logout" class="button is-primary") Logout
+              else
+                a(href="/register" class="button is-primary") Sign up
+                a(href="/login" class="button is-primary") Log in
+
     block content
