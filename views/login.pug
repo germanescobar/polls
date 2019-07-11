@@ -1,13 +1,41 @@
 extends layout
 
 block content
+  if error
+    p(class="error")= error
   div
     h3 Login
-    form(action="/login", method="post")
+    form(id="login_form" action="/login", method="post")
       div
         label(for="email") Email
         input(type="text" id="email" name="email")
       div
         label(for="password") Password
-        input(type="password" name="password")
+        input(type="password" id="password" name="password")
       button(type="submit") Login
+  
+  script.
+    $(document).ready(function() {  
+      $('#login_form').submit(function(e) {
+      
+        let email = $('#email').val();
+        let password = $('#password').val();
+    
+        $(".error").remove();
+    
+        if (email.length < 1) {
+          $('#email').after('<span class="error">This field is required</span>');
+        } else {
+          let regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          let validEmail = regEx.test(email);
+          if (!validEmail) {
+            e.preventDefault();
+            $('#email').after('<span class="error">Enter a valid email</span>');
+          }
+        }
+        if (password.length < 8) {
+          e.preventDefault();
+          $('#password').after('<span class="error">Password must be at least 8 characters long</span>');
+        }
+      });
+    })

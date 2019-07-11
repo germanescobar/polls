@@ -1,13 +1,43 @@
 extends layout
 
 block content
+  include mixins
   div
     h3 Register
-    form(action="/register", method="post")
+    form(id="register_form" action="/register", method="post")
       div
         label(for="email") Email
         input(type="text", id="email", name="email")
+        +error(errors, "email")
+        +userError
       div   
         label(for="password") Password
-        input(type="password", name="password")
+        input(type="password" id="password" name="password")
+        +error(errors, "password")
       button(type = "submit") Register
+  
+  script.
+    $(document).ready(function() {  
+      $('#register_form').submit(function(e) {
+      
+        let email = $('#email').val();
+        let password = $('#password').val();
+    
+        $(".error").remove();
+    
+        if (email.length < 1) {
+          $('#email').after('<span class="error">This field is required</span>');
+        } else {
+          let regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          let validEmail = regEx.test(email);
+          if (!validEmail) {
+            e.preventDefault();
+            $('#email').after('<span class="error">Enter a valid email</span>');
+          }
+        }
+        if (password.length < 8) {
+          e.preventDefault();
+          $('#password').after('<span class="error">Password must be at least 8 characters long</span>');
+        }
+      });
+    })

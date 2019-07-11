@@ -29,7 +29,6 @@ app.use(async (req, res, next) => {
       delete req.session.userId;
     }
   }
-
   next();
 });
 
@@ -47,27 +46,40 @@ const requireGuest = (req, res, next) => {
   next();
 }
 
-app.get("/register", (req, res, next) => {
+// Formulario de registro
+app.get("/register", requireGuest, (req, res, next) => {
   res.render('register');
 })
 
-app.post('/register', async (req, res, next) => {
+// Creacion de usuario
+app.post('/register', requireGuest, async (req, res, next) => {
   try {
-    const data = {
-      email: req.body.email,
-      password: req.body.password
+    let user = await User.findOne({ email: req.body.email });
+    if(!user){
+      const data = {
+        email: req.body.email,
+        password: req.body.password
+      }
+      await User.create(data);
+      res.redirect("/login");
+    } else { 
+      return res.render('register', {error: 'Email already exist!'});
     }
-    await User.create(data);
-    res.redirect("/login");
   } catch(err) {
-    next(err);
+    if(err.name === "ValidationError"){
+      res.render("register", {errors: err.errors})
+    } else{
+      next(err);
+    }
   }
 })
 
+// Formulario de login
 app.get('/login', requireGuest, (req, res) => {
   res.render('login');
 })
 
+// Inicio de sesion
 app.post("/login", requireGuest, async (req, res, next) => {
   try {
     const data = {
@@ -86,6 +98,7 @@ app.post("/login", requireGuest, async (req, res, next) => {
   }
 });
 
+// Home
 app.get("/", async (req, res, next) => {
   try {
     const polls = await Poll.find().populate('user');

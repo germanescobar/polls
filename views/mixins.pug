@@ -1,0 +1,7 @@
+mixin error(errors, field)
+    if errors && errors[field]
+        p(class="error")= errors[field].message
+        
+mixin userError
+    if error
+        p(class="error")= error
