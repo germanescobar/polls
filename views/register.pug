@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  div
+    form(action="/register" method="POST")
+      h3 Register
+      label Nombre
+      input(type="text" name="name" placeholder="Nombre")
+      br
+      label Correo
+      input(type="text" name="email" placeholder="Correo")
+      br
+      label Contraseña
+      input(type="password" name="password" placeholder="Contraseña")
+      br
+      input(type="submit", value="Registrar")

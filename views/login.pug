@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  div
+    form(action="/login" method="POST")
+      h3 Login
+      label Correo
+      input(type="text" name="email" placeholder="Correo")
+      br
+      label Contraseña
+      input(type="password" name="password" placeholder="Contraseña")
+      br
+      input(type="submit", value="Ingresar")
