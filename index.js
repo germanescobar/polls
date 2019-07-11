@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const User = require("./models/User");
 const Poll = require("./models/Poll");
+const bcrypt = require('bcrypt');
+const cookieSession = require("cookie-session");
 
 mongoose.connect("mongodb://127.0.0.1:27017/polls_top", { useNewUrlParser: true });
 
@@ -9,8 +11,52 @@ const app = express();
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
+app.use(cookieSession({
+  secret: "una_cadena_secreta",
+  maxAge: 3*60*1000
+}));
 
 app.use(express.urlencoded({ extended: true}));
+
+app.get("/register", (req, res, next) => {
+  res.render('register');
+})
+
+app.post('/register', async (req, res, next) => {
+  try {
+    const data = {
+      email: req.body.email,
+      password: req.body.password
+    }
+    const user = await User.create(data);
+    res.redirect("/login");
+  } catch(err) {
+    
+    next(err);
+  }
+})
+
+app.get('/login', (req, res) => {
+  res.render('login');
+})
+
+app.post("/login", async (req, res, next) => {  
+  try {
+    const data = {
+      email: req.body.email,
+      password: req.body.password
+    }
+    const user = await User.authenticate(data.email, data.password);
+    if (user) {
+      req.session.userId = user._id;
+      return res.redirect('/');
+    } else {
+      return res.render('login', {error: 'Wrong user or password, Try Again!'});
+    }
+  } catch (e) {
+    return next(e); 
+  }
+});
 
 app.get("/", async (req, res, next) => {
   const polls = await Poll.find().populate('user');
@@ -108,7 +154,14 @@ app.get("/polls/:id/results", async (req, res, next) => {
   }catch (e) {
     next(e);
   }
-
 });
+
+//logout
+app.get("/logout", (req, res) => {
+  res.session = null;
+  res.clearCookie('session');
+  res.clearCookie('session.sig');
+  res.redirect('/login');
+})
 
 app.listen(3000, () => console.log("Escuchando en el puerto 3000 ...."));
