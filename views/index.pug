@@ -2,7 +2,10 @@ extends layout
 
 block content
   div(class="container")
-    div(class="columns")    
+    div(class="columns")
+      div(class="column")
+        a(href="/polls/new" class="button is-link") New Poll
+    div(class="columns")   
       each poll in polls 
         div(class="column is-4")
           div(class="card")
