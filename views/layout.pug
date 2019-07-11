@@ -8,7 +8,7 @@ html
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css")
     script(defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js")
 
-  body(class="container")
+  body
     nav(class="navbar is-light" role="navigation" aria-label="main navigation")
       div(class="container")      
         div(class="navbar-brand")
@@ -20,10 +20,9 @@ html
           div(class="navbar-item")
             div(class="buttons")
               if user
-                a(href="/logout" class="button is-primary") Sign up
+                a(href="/logout" class="button is-primary") Logout
               else
-                a(href="/register" class="button is-primary")
-                  strong Sign up
-                a(href="/login" class="button is-light") Log in
-              
+                a(href="/register" class="button is-primary") Sign up
+                a(href="/login" class="button is-primary") Log in
+
     block content

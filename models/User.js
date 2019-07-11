@@ -23,11 +23,11 @@ userSchema.pre("save", function(next) {
     this.password = hash;
     next();
   })
-});  
+});
 
 userSchema.statics.authenticate = async (email, password) => {
   const user = await User.findOne({ email: email });
-  if(user) {
+  if (user) {
     return new Promise((resolve, reject) => {
       bcrypt.compare(password, user.password, (err, result) => {
         if (err) reject(err);

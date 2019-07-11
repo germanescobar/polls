@@ -2,9 +2,10 @@ extends layout
 
 block content
   div(class="container")
-    div(class="columns")
-      div(class="column")
-        a(href="/polls/new" class="button is-link") New Poll
+    if user
+      div(class="columns")
+        div(class="column")
+          a(href="/polls/new" class="button is-link") New Poll
     div(class="columns")
       each poll in polls 
         div(class="column is-4")
@@ -17,4 +18,5 @@ block content
             footer(class="card-footer")
               p(class="card-footer-item") Votos: #{poll.totalVotes()}
               a(href=`/polls/${poll._id}` class="card-footer-item is-link") Votar
-              a(href=`/polls/${poll._id}/edit` class="card-footer-item is-link") Actualizar
+              if user && user._id.equals(poll.user._id)
+                a(href=`/polls/${poll._id}/edit` class="card-footer-item is-link") Actualizar
