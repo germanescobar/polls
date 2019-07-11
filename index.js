@@ -117,7 +117,11 @@ app.post("/polls", requireUser, async (req, res, next) => {
     await Poll.create(data);
     res.redirect('/');
   } catch(err) {
-    next(err);
+    if(err.name === "ValidationError"){
+      res.render("form",{ errors : err.errors})
+    }else{
+      next(err);
+    }
   }
 });
 
@@ -149,7 +153,7 @@ app.post('/polls/:id', requireUser, async (req, res, next) => {
     await Poll.update({_id:id}, data);
     res.redirect('/')
   } catch(err) {
-    next(err)
+      next(err);
   }
 });
 

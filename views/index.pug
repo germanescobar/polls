@@ -16,7 +16,7 @@ block content
               div(class="content") #{poll.description}
 
             footer(class="card-footer")
-              p(class="card-footer-item") Votos: #{poll.totalVotes()}
+              p(class="card-footer-item") Votos: #{poll.totalVotes()} #{poll.totalOptions()}
               a(href=`/polls/${poll._id}` class="card-footer-item is-link") Votar
               if user && user._id.equals(poll.user._id)
                 a(href=`/polls/${poll._id}/edit` class="card-footer-item is-link") Actualizar

@@ -10,6 +10,8 @@ block content
             label(class="label") Title
             div(class="control")
               input(type="text" name="title" placeholder="Title" class="input is-rounded")
+              if errors && errors.title
+                p Es necesario un titulo para la encuesta
 
           div(class="field")
             label(class="label") Description
