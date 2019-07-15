@@ -5,14 +5,14 @@ const Poll = require("./models/Poll");
 const bcrypt = require('bcrypt');
 const cookieSession = require("cookie-session");
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/polls_top", { useNewUrlParser: true });
+mongoose.connect("mongodb://127.0.0.1:27017/polls_top", { useNewUrlParser: true });
 
 const app = express();
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
 app.use(cookieSession({
-  secret: process.env.COOKIE_SECRET || "una_cadena_secreta",
+  secret: "una_cadena_secreta",
   maxAge: 2 * 24 * 60 * 60 * 1000
 }));
 
@@ -29,7 +29,6 @@ app.use(async (req, res, next) => {
       delete req.session.userId;
     }
   }
-
   next();
 });
 
@@ -47,27 +46,40 @@ const requireGuest = (req, res, next) => {
   next();
 }
 
-app.get("/register", (req, res, next) => {
+// Formulario de registro
+app.get("/register", requireGuest, (req, res, next) => {
   res.render('register');
 })
 
-app.post('/register', async (req, res, next) => {
+// Creacion de usuario
+app.post('/register', requireGuest, async (req, res, next) => {
   try {
-    const data = {
-      email: req.body.email,
-      password: req.body.password
+    let user = await User.findOne({ email: req.body.email });
+    if(!user){
+      const data = {
+        email: req.body.email,
+        password: req.body.password
+      }
+      await User.create(data);
+      res.redirect("/login");
+    } else { 
+      return res.render('register', {error: 'Email already exist!'});
     }
-    await User.create(data);
-    res.redirect("/login");
   } catch(err) {
-    next(err);
+    if(err.name === "ValidationError"){
+      res.render("register", {errors: err.errors})
+    } else{
+      next(err);
+    }
   }
 })
 
+// Formulario de login
 app.get('/login', requireGuest, (req, res) => {
   res.render('login');
 })
 
+// Inicio de sesion
 app.post("/login", requireGuest, async (req, res, next) => {
   try {
     const data = {
@@ -86,6 +98,7 @@ app.post("/login", requireGuest, async (req, res, next) => {
   }
 });
 
+// Home
 app.get("/", async (req, res, next) => {
   try {
     const polls = await Poll.find().populate('user');
@@ -194,5 +207,4 @@ app.get("/logout", requireUser, (req, res) => {
   res.redirect('/login');
 })
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Escuchando en el puerto ${PORT} ...`));
+app.listen(3000, () => console.log("Escuchando en el puerto 3000 ...."));
