@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --forceExit",
+    "start": "npx jest"
   },
   "keywords": [],
   "author": "",
@@ -16,5 +17,11 @@
     "express": "^4.17.1",
     "mongoose": "^5.6.4",
     "pug": "^2.0.4"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "jest": "^24.8.0",
+    "superagent": "^5.1.0",
+    "supertest": "^4.0.2"
   }
 }
