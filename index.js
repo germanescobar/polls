@@ -195,4 +195,5 @@ app.get("/logout", requireUser, (req, res) => {
 })
 
 const PORT = process.env.PORT || 3000;
+module.exports = app;
 app.listen(PORT, () => console.log(`Escuchando en el puerto ${PORT} ...`));
