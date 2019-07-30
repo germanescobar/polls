@@ -4,8 +4,9 @@ const User = require("./models/User");
 const Poll = require("./models/Poll");
 const bcrypt = require('bcrypt');
 const cookieSession = require("cookie-session");
+const axios = require('axios');
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/polls_top", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/polls_top_test", { useNewUrlParser: true });
 
 const app = express();
 
@@ -49,6 +50,30 @@ const requireGuest = (req, res, next) => {
 
 app.get("/register", (req, res, next) => {
   res.render('register');
+})
+
+app.get('/auth/github/callback', async (req, res, next) => {  
+  const code = req.query.code;
+  try {
+    let response = await axios.post('https://github.com/login/oauth/access_token', {
+      client_id: '9692f3bce1e5609e6f04',
+      client_secret: '36c16690fc1f1754dd7a01891644980f12ac8531',
+      code
+    }, { headers: { "Accept": 'application/json' } });
+
+    const token = response.data.access_token;
+
+    response = await axios.get(`https://api.github.com/user/emails?access_token=${token}`);
+
+    const email = response.data[0].email;
+
+    res.locals.user = email
+
+    res.redirect('/')
+
+  } catch(e) {
+    next(e);
+  }
 })
 
 app.post('/register', async (req, res, next) => {
@@ -96,24 +121,22 @@ app.get("/", async (req, res, next) => {
 });
 
 // formulario para crear una encuesta
-app.get("/polls/new", requireUser, (req, res) => {
+app.get("/polls/new", /*requireUser,*/ (req, res) => {
   res.render('form');
 });
 
 // crear una encuesta
 app.post("/polls", requireUser, async (req, res, next) => {
   try {
+    console.log(req.body)
+    const options = req.body.option.map(o => { text: o })
     const data = {
       title: req.body.title,
       description: req.body.description,
       user: res.locals.user,
-      options: [
-        { text: req.body.option1 },
-        { text: req.body.option2 },
-        { text: req.body.option3 },
-        { text: req.body.option4 }
-      ]
+      options
     }
+
     await Poll.create(data);
     res.redirect('/');
   } catch(err) {
@@ -196,3 +219,7 @@ app.get("/logout", requireUser, (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Escuchando en el puerto ${PORT} ...`));
+
+
+module.exports = app;
+

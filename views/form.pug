@@ -16,25 +16,55 @@ block content
             div(class="control")
               textarea(name="description", cols="30", rows="5" class="textarea" placeholder="Description")
 
-          div(class="field")
-            label(class="label") Opcion 1
-            div(class="control")
-              input(type="text" name="option1" class="input is-rounded")
+          div(id='inputs')  
+            div(class="field")
+              label(class="label") Opcion 1
+              div(class="control")
+                input(type="text" name="option" class="input is-rounded")
+
+            div(class="field")
+              label(class="label") Opcion 2
+              div(class="control")
+                input(type="text" name="option" class="input is-rounded")    
+
+            //- div(class="field")
+            //-   label(class="label") Opcion 3
+            //-   div(class="control")
+            //-     input(type="text" name="option3" class="input is-rounded")      
+
+            //- div(class="field")
+            //-   label(class="label") Opcion 4
+            //-   div(class="control")
+            //-     input(type="text" name="option4" class="input is-rounded")
 
           div(class="field")
-            label(class="label") Opcion 2
-            div(class="control")
-              input(type="text" name="option2" class="input is-rounded")    
-
-          div(class="field")
-            label(class="label") Opcion 3
-            div(class="control")
-              input(type="text" name="option3" class="input is-rounded")      
-
-          div(class="field")
-            label(class="label") Opcion 4
-            div(class="control")
-              input(type="text" name="option4" class="input is-rounded")
+            div(class="control")              
+              a(id="plus" class="is-pulled-right")
+                label New
+                i(class="fas fa-plus fas fa-lg")
 
           div(class="control")
             input(type="submit", value="Create" class="button is-link")
+
+  
+
+    
+    script.
+      let optionNum = 2
+      $("#plus").on('click', function() {
+        optionNum++
+        $('#inputs').append(
+            `<label class="label"> Opcion ${optionNum} </label>
+            <div class="field is-grouped">
+              <p class="control is-expanded">
+                <input type="text" name="option" class="input is-rounded">
+              </p>
+              <p class="control">
+                <a>
+                  <i class="fas fa-trash"></i>
+                </a>
+              </p>
+            </div>`
+        )
+      });
+      
